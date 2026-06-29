@@ -53,4 +53,12 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ItemPedido> itens = new ArrayList<>();
+
+    private String perfilCliente;
+
+    private String recomendacoes;
+
+    private String cupomDesconto;
+
+    private String mensagemIA;
 }

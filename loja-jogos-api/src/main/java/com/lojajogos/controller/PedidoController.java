@@ -1,5 +1,6 @@
 package com.lojajogos.controller;
 
+import com.lojajogos.dto.AnaliseRequestDTO;
 import com.lojajogos.dto.PedidoRequestDTO;
 import com.lojajogos.dto.PedidoResponseDTO;
 import com.lojajogos.entity.StatusPedido;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class PedidoController {
 
@@ -48,6 +51,14 @@ public class PedidoController {
             @RequestBody StatusPedido status
     ) {
         return ResponseEntity.ok(pedidoService.atualizarStatus(id, status));
+    }
+
+    @PutMapping("/{id}/analise")
+    public ResponseEntity<PedidoResponseDTO> atualizarAnalise(
+            @PathVariable Long id,
+            @RequestBody AnaliseRequestDTO dto
+    ) {
+        return ResponseEntity.ok(pedidoService.atualizarAnalise(id, dto));
     }
 
     @DeleteMapping("/{id}")
