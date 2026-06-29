@@ -12,6 +12,10 @@ public record PedidoResponseDTO(
         LocalDateTime dataPedido,
         BigDecimal valorTotal,
         StatusPedido statusPedido,
-        List<ItemPedidoResponseDTO> itens
+        List<ItemPedidoResponseDTO> itens,
+        String perfilCliente,
+        String recomendacoes,
+        String cupomDesconto,
+        String mensagemIA
 ) {
 }
