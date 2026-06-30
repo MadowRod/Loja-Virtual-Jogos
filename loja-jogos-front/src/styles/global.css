@@ -1,9 +1,20 @@
 :root {
+  --bg-dark: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-input: #1a1a24;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --muted: #6b7280;
+  --neon-cyan: #06b6d4;
+  --neon-purple: #8b5cf6;
+  --neon-green: #10b981;
+  --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.5);
+  --glow-purple: 0 0 20px rgba(139, 92, 246, 0.5);
+  --border-dark: #2a2a3a;
   --bg: #f6f7fb;
   --surface: #ffffff;
   --surface-strong: #111827;
   --text: #283142;
-  --muted: #667085;
   --border: #d9dde7;
   --primary: #1f6feb;
   --primary-dark: #164da4;
@@ -29,6 +40,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--bg-dark);
+  color: var(--text-primary);
 }
 
 a {
@@ -39,10 +52,10 @@ a {
 button,
 .button {
   align-items: center;
-  background: var(--primary);
-  border: 1px solid var(--primary);
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+  border: none;
   border-radius: 8px;
-  color: #fff;
+  color: white;
   cursor: pointer;
   display: inline-flex;
   font: inherit;
@@ -50,14 +63,14 @@ button,
   justify-content: center;
   min-height: 44px;
   padding: 0 18px;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: var(--glow-cyan);
 }
 
 button:hover,
 .button:hover {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.7);
 }
 
 button:disabled {
@@ -68,22 +81,22 @@ button:disabled {
 
 button.ghost,
 .button.ghost {
-  background: #fff;
-  color: var(--primary);
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
 }
 
 button.ghost:hover,
 .button.ghost:hover {
-  background: #eaf1ff;
-  color: var(--primary-dark);
+  background: rgba(6, 182, 212, 0.1);
 }
 
 input,
 select {
-  background: #fff;
-  border: 1px solid var(--border);
+  background: var(--bg-input);
+  border: 2px solid var(--border-dark);
   border-radius: 8px;
-  color: var(--text);
+  color: var(--text-primary);
   font: inherit;
   min-height: 44px;
   padding: 10px 12px;
@@ -91,7 +104,12 @@ select {
 }
 
 input:focus,
-select:focus,
+select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+  outline: none;
+}
+
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid rgba(31, 111, 235, 0.28);
@@ -105,14 +123,15 @@ p {
 }
 
 h1 {
-  color: #0f172a;
+  color: var(--neon-cyan);
   font-size: clamp(2rem, 5vw, 4.5rem);
   line-height: 1;
   margin-bottom: 18px;
+  text-shadow: var(--glow-cyan);
 }
 
 h2 {
-  color: #101828;
+  color: var(--neon-cyan);
   font-size: 1.2rem;
   line-height: 1.2;
   margin-bottom: 8px;
@@ -120,8 +139,9 @@ h2 {
 
 .navbar {
   align-items: center;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 15, 0.95);
+  border-bottom: 2px solid var(--neon-purple);
+  box-shadow: var(--glow-purple);
   display: flex;
   gap: 20px;
   justify-content: space-between;
@@ -133,8 +153,9 @@ h2 {
 }
 
 .brand {
-  color: #0f172a;
+  color: var(--neon-cyan);
   font-weight: 900;
+  text-shadow: var(--glow-cyan);
 }
 
 .nav-links,
@@ -148,15 +169,17 @@ h2 {
 
 .nav-links a {
   border-radius: 8px;
-  color: var(--muted);
+  color: var(--text-secondary);
   font-weight: 700;
   padding: 10px 12px;
+  transition: all 0.3s ease;
 }
 
 .nav-links a.active,
 .nav-links a:hover {
-  background: #eaf1ff;
-  color: var(--primary-dark);
+  color: var(--neon-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  box-shadow: var(--glow-cyan);
 }
 
 .user-name {
@@ -178,15 +201,33 @@ h2 {
 
 .hero-panel {
   align-items: center;
-  background: linear-gradient(135deg, #ffffff 0%, #eef4ff 58%, #e9fff8 100%);
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(10, 10, 15, 0.95), rgba(18, 18, 26, 0.95));
+  border: 2px solid var(--neon-purple);
   border-radius: 8px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--glow-purple);
   display: grid;
   gap: 28px;
   grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
   min-height: 430px;
   padding: clamp(24px, 5vw, 56px);
+  position: relative;
+}
+
+.hero-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+  animation: pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
 }
 
 .hero-panel p,
@@ -208,14 +249,25 @@ h2 {
   padding: 28px;
 }
 
+.console-visual a {
+  text-decoration: none;
+}
+
 .console-visual span {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid var(--neon-cyan);
   border-radius: 8px;
   display: block;
   font-size: 2rem;
   font-weight: 900;
   padding: 20px;
+  text-shadow: var(--glow-cyan);
+  transition: all 0.3s ease;
+}
+
+.console-visual span:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
 }
 
 .category-strip,
@@ -229,26 +281,41 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
+.category-strip a {
+  text-decoration: none;
+}
+
 .category-strip span,
+.category-strip a,
 .badge,
 .status {
-  background: #eaf1ff;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid var(--neon-cyan);
   border-radius: 999px;
-  color: var(--primary-dark);
+  color: var(--neon-cyan);
   font-size: 0.85rem;
   font-weight: 800;
   padding: 8px 12px;
   text-align: center;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.category-strip span:hover,
+.category-strip a:hover {
+  background: rgba(6, 182, 212, 0.25);
+  box-shadow: var(--glow-cyan);
 }
 
 .eyebrow {
-  color: var(--accent);
+  color: var(--neon-purple);
   display: inline-block;
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   margin-bottom: 10px;
   text-transform: uppercase;
+  text-shadow: var(--glow-purple);
 }
 
 .product-grid,
@@ -260,11 +327,25 @@ h2 {
 }
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 10px 24px rgba(20, 31, 54, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3);
+}
+
+.card[data-platform="PS5"] {
+  border-left: 4px solid var(--neon-cyan);
+}
+
+.card[data-platform="Xbox"] {
+  border-left: 4px solid var(--neon-green);
 }
 
 .product-card {
@@ -284,8 +365,9 @@ h2 {
 
 .product-art {
   align-items: center;
-  background: #f8fafc;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
   border-bottom: 1px solid var(--border);
+  border-radius: 8px;
   color: #fff;
   display: flex;
   font-size: 2.4rem;
@@ -293,6 +375,22 @@ h2 {
   justify-content: center;
   overflow: hidden;
   padding: 18px;
+  position: relative;
+}
+
+.product-art::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.card:hover .product-art::before {
+  left: 100%;
 }
 
 .product-art.jogo {
@@ -345,8 +443,9 @@ h2 {
 .card-body strong,
 .summary strong,
 .metric strong {
-  color: #0f172a;
+  color: var(--neon-cyan);
   font-size: 1.5rem;
+  text-shadow: var(--glow-cyan);
 }
 
 .form-page {
@@ -355,21 +454,38 @@ h2 {
 }
 
 .form-card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
+  background: var(--bg-card);
+  border: 2px solid var(--neon-purple);
+  border-radius: 16px;
+  box-shadow: var(--glow-purple);
   display: grid;
   gap: 12px;
   max-width: 620px;
   padding: 28px;
   width: min(620px, calc(100vw - 32px));
+  position: relative;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
 }
 
 .form-link {
-  color: var(--primary-dark);
+  color: var(--neon-cyan);
   font-weight: 800;
   text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.form-link:hover {
+  text-shadow: var(--glow-cyan);
 }
 
 .toolbar {
@@ -384,18 +500,22 @@ h2 {
 }
 
 label {
-  color: #344054;
+  color: var(--text-primary);
   font-weight: 800;
 }
 
 .badge.playstation {
-  background: #eaf1ff;
-  color: #003791;
+  background: rgba(6, 182, 212, 0.2);
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
 }
 
 .badge.xbox {
-  background: #e9f8e9;
-  color: #107c10;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
 }
 
 .cart-layout {
@@ -533,8 +653,9 @@ label {
 }
 
 .message.error {
-  background: #fff1e8;
-  color: var(--danger);
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #ef4444;
+  color: #ef4444;
 }
 
 .form-hint {
