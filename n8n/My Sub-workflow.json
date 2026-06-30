@@ -1,0 +1,134 @@
+{
+  "name": "My Sub-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pedidos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "93469607-bf00-4518-8cba-d5954d0ad52d",
+      "name": "Webhook",
+      "webhookId": "7148e659-bce4-4cfc-811b-60a5fa4a66b0"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedido = $('Webhook').first().json;\n\nconst raw = $input.first().json.text\n  ?? $input.first().json.output\n  ?? $input.first().json.content?.parts?.[0]?.text\n  ?? $input.first().json.message?.content\n  ?? JSON.stringify($input.first().json);\n\nconst cleaned = raw.replace(/```json\\s*/gi, '').replace(/```/g, '').trim();\nconst match = cleaned.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  throw new Error('Gemini não retornou JSON válido: ' + raw);\n}\n\nconst analise = JSON.parse(match[0]);\n\nreturn [{\n  json: {\n    pedidoId: pedido.id,\n    perfilCliente: analise.perfilCliente,\n    recomendacoes: analise.recomendacoes,\n    cupomDesconto: analise.cupomDesconto,\n    mensagemIA: analise.mensagemIA\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        0
+      ],
+      "id": "f70536a9-c941-4aeb-919f-0fe9863a6c51",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=http://localhost:8080/pedidos/{{ $('Webhook').item.json.body.id }}/analise",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"perfilCliente\": \"{{ $json.perfilCliente }}\",\n  \"recomendacoes\": \"{{ $json.recomendacoes }}\",\n  \"cupomDesconto\": \"{{ $json.cupomDesconto }}\",\n  \"mensagemIA\": \"{{ $json.mensagemIA }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        960,
+        0
+      ],
+      "id": "f2365ece-057f-4909-8aca-b682ac16d8cb",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você é um assistente de uma loja virtual de jogos em Petrópolis.\nAnalise o pedido e retorne APENAS um JSON válido, sem markdown, com estes 4 campos: {{ $json.body }}\n- perfilCliente: perfil do comprador em 1 frase\n- recomendacoes: 2 ou 3 jogos sugeridos separados por vírgula\n- cupomDesconto: código criativo (ex: RPG15, GAMER10)\n- mensagemIA: mensagem personalizada de 1 a 2 frases\nRegras:\n- Português brasileiro\n- Inferir perfil pelos jogos comprados\n- Se valorTotal > 300, cupom com desconto maior (ex: GAMER20) "
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "6d207415-eacc-4040-a02c-d4e94f9dc347",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "sThBwOtyTepVO3l6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "99f91b44-188a-4a23-98d5-48abcd9d7864",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "375e71bac5eb21a52035952ee27c5477ecfc4d6bf69f2fceeaac8ddd44765783"
+  },
+  "id": "jgijzpd4QT7soLfK",
+  "tags": []
+}
