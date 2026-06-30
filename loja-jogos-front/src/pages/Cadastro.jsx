@@ -75,8 +75,18 @@ export default function Cadastro() {
 
     try {
       setCarregando(true);
-      const dadosCadastro = { ...formCadastro };
-      delete dadosCadastro.confirmarSenha;
+      const dadosCadastro = {
+        nome: formCadastro.nome,
+        email: formCadastro.email,
+        senha: formCadastro.senha,
+        telefone: formCadastro.telefone,
+        cep: formCadastro.cep,
+        rua: formCadastro.rua,
+        numero: formCadastro.numero,
+        bairro: formCadastro.bairro,
+        cidade: formCadastro.cidade,
+        pais: formCadastro.pais,
+      };
       await api.post("/clientes", dadosCadastro);
       setMensagem("Cadastro realizado com sucesso.");
       window.setTimeout(() => navigate("/login"), 900);

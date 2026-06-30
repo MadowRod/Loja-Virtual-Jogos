@@ -481,6 +481,46 @@ label {
   font-weight: 800;
 }
 
+.ai-analysis-card {
+  display: grid;
+  gap: 16px;
+}
+
+.ai-analysis-block {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.ai-analysis-block span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ai-analysis-block p {
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.ai-analysis-block strong {
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+}
+
+.coupon {
+  background: #e9fbf4;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  color: #047857;
+  font-weight: 900;
+  padding: 8px 12px;
+}
+
 .message {
   border-radius: 8px;
   font-weight: 800;

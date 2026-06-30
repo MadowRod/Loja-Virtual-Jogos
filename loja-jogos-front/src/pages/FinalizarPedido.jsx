@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
@@ -12,11 +12,14 @@ function formatarMoeda(valor) {
 
 export default function FinalizarPedido() {
   const navigate = useNavigate();
-  const { cliente } = useAuth();
+  const { cliente, logout } = useAuth();
   const [itens] = useState(() =>
     JSON.parse(localStorage.getItem("lojaJogosCarrinho") || "[]")
   );
-  const [tipoEndereco, setTipoEndereco] = useState("");
+  const [tipoEndereco, setTipoEndereco] = useState(
+    cliente?.cep && cliente?.rua && cliente?.numero ? "cadastrado" : "novo"
+  );
+  const [enderecoSincronizado, setEnderecoSincronizado] = useState(false);
   const [novoEndereco, setNovoEndereco] = useState({
     cep: "",
     rua: "",
@@ -100,8 +103,41 @@ export default function FinalizarPedido() {
     return null;
   }
 
+  const clienteTemEndereco =
+    cliente?.cep && cliente?.rua && cliente?.numero;
+  const nomeCliente =
+    cliente?.nome && cliente.nome !== cliente.email
+      ? cliente.nome
+      : "Nome nao cadastrado";
+
+  useEffect(() => {
+    if (clienteTemEndereco && !enderecoSincronizado) {
+      setTipoEndereco("cadastrado");
+      setEnderecoSincronizado(true);
+    }
+  }, [clienteTemEndereco, enderecoSincronizado]);
+
   async function criarPedido() {
     setErro("");
+
+    if (!cliente?.id) {
+      setErro("Faca login novamente para finalizar o pedido.");
+      return;
+    }
+
+    if (itens.length === 0) {
+      setErro("Seu carrinho esta vazio.");
+      return;
+    }
+
+    const itemSemId = itens.some((item) => !item.jogo?.id || !item.quantidade);
+
+    if (itemSemId) {
+      localStorage.removeItem("lojaJogosCarrinho");
+      setErro("Seu carrinho tinha produto antigo. Adicione os produtos novamente.");
+      return;
+    }
+
     const enderecoSelecionado = obterEnderecoSelecionado();
 
     if (!enderecoSelecionado) {
@@ -109,8 +145,9 @@ export default function FinalizarPedido() {
       return;
     }
 
-    const enderecoIncompleto = Object.values(enderecoSelecionado).some(
-      (valor) => !String(valor).trim()
+    const camposObrigatoriosEndereco = ["cep", "rua", "numero"];
+    const enderecoIncompleto = camposObrigatoriosEndereco.some(
+      (campo) => !String(enderecoSelecionado[campo] || "").trim()
     );
 
     if (enderecoIncompleto) {
@@ -142,8 +179,50 @@ export default function FinalizarPedido() {
       );
       localStorage.removeItem("lojaJogosCarrinho");
       navigate("/pedidos");
-    } catch {
-      setErro("Nao foi possivel finalizar o pedido.");
+    } catch (error) {
+      console.error("Erro ao finalizar pedido:", error);
+
+      if (error.response?.status === 404) {
+        const mensagem = error.response?.data?.mensagem || "";
+
+        if (mensagem.toLowerCase().includes("cliente")) {
+          logout();
+          setErro("Sua sessao expirou. Faca login novamente para finalizar o pedido.");
+          return;
+        }
+
+        localStorage.removeItem("lojaJogosCarrinho");
+        setErro("Seu carrinho tinha produto antigo. Adicione os produtos novamente.");
+        return;
+      }
+
+      if (error.response?.status === 400) {
+        setErro(
+          error.response?.data?.mensagem ||
+            "Confira os itens do carrinho antes de finalizar."
+        );
+        return;
+      }
+
+      if (error.response?.status === 403) {
+        setErro("A API recusou a requisicao. Verifique se o front esta aberto em localhost:5173 e reinicie o backend.");
+        return;
+      }
+
+      if (!error.response) {
+        setErro("Nao foi possivel conectar ao backend. Verifique se a API esta rodando na porta 8080.");
+        return;
+      }
+
+      if (error.response.status === 502) {
+        setErro("Nao foi possivel conectar ao backend. Inicie a API na porta 8080 e tente novamente.");
+        return;
+      }
+
+      setErro(
+        error.response?.data?.mensagem ||
+          `Nao foi possivel finalizar o pedido. Erro ${error.response.status}.`
+      );
     } finally {
       setCarregando(false);
     }
@@ -163,8 +242,8 @@ export default function FinalizarPedido() {
       ) : (
         <div className="card checkout-card">
           <h2>Cliente</h2>
-          <p>{cliente.nome}</p>
-          <p>{cliente.email}</p>
+          <p>Nome: {nomeCliente}</p>
+          <p>Gmail: {cliente.email}</p>
 
           <h2>Endereco de entrega</h2>
           <div className="address-options" role="radiogroup" aria-label="Endereco de entrega">
@@ -175,12 +254,20 @@ export default function FinalizarPedido() {
                 name="tipoEndereco"
                 value="cadastrado"
                 checked={tipoEndereco === "cadastrado"}
-                onChange={(event) => setTipoEndereco(event.target.value)}
+                disabled={!clienteTemEndereco}
+                onChange={(event) => {
+                  setEnderecoSincronizado(true);
+                  setTipoEndereco(event.target.value);
+                }}
               />
-              <span>
-                {cliente.rua}, {cliente.numero} - {cliente.bairro},{" "}
-                {cliente.cidade} - {cliente.pais}, CEP {cliente.cep}
-              </span>
+              {clienteTemEndereco ? (
+                <span>
+                  Usar endereco cadastrado: Rua {cliente.rua}, numero{" "}
+                  {cliente.numero}, CEP {cliente.cep}
+                </span>
+              ) : (
+                <span>Usar endereco cadastrado: nenhum endereco salvo</span>
+              )}
             </label>
 
             <label className="address-option" htmlFor="enderecoNovo">
@@ -190,7 +277,10 @@ export default function FinalizarPedido() {
                 name="tipoEndereco"
                 value="novo"
                 checked={tipoEndereco === "novo"}
-                onChange={(event) => setTipoEndereco(event.target.value)}
+                onChange={(event) => {
+                  setEnderecoSincronizado(true);
+                  setTipoEndereco(event.target.value);
+                }}
               />
               <span>Cadastrar outro endereco</span>
             </label>

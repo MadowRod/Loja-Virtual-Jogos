@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import api from "../services/api";
 
 const AuthContext = createContext(null);
@@ -17,17 +17,31 @@ export function AuthProvider({ children }) {
   }, []);
   const [carregandoToken] = useState(false);
 
-  async function login({ email, senha }) {
-    const { data } = await api.get("/clientes");
-    const clienteEncontrado = data.find(
-      (item) =>
-        item.email.toLowerCase() === email.toLowerCase() &&
-        item.senha === senha
-    );
+  useEffect(() => {
+    const token = localStorage.getItem("lojaJogosToken");
 
-    if (!clienteEncontrado) {
-      throw new Error("Cliente nao encontrado");
+    if (!token || !cliente?.id) {
+      return;
     }
+
+    api
+      .get(`/clientes/${cliente.id}`)
+      .then(({ data }) => {
+        localStorage.setItem("lojaJogosCliente", JSON.stringify(data));
+        setCliente(data);
+      })
+      .catch(() => {
+        localStorage.removeItem("lojaJogosToken");
+        localStorage.removeItem("lojaJogosCliente");
+        setCliente(null);
+      });
+  }, [cliente?.id]);
+
+  async function login({ email, senha }) {
+    const { data: clienteEncontrado } = await api.post("/clientes/login", {
+      email,
+      senha,
+    });
 
     const token = `cliente-${clienteEncontrado.id}`;
     localStorage.setItem("lojaJogosToken", token);

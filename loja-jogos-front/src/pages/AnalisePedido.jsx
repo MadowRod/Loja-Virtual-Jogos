@@ -9,6 +9,12 @@ function formatarMoeda(valor) {
   });
 }
 
+function temAnaliseIA(pedido) {
+  return Boolean(
+    pedido.mensagemIA || pedido.recomendacoes || pedido.cupomDesconto
+  );
+}
+
 export default function AnalisePedido() {
   const { cliente } = useAuth();
   const [pedidos, setPedidos] = useState([]);
@@ -46,8 +52,15 @@ export default function AnalisePedido() {
     const plataformaFavorita =
       Object.entries(plataformas).sort((a, b) => b[1] - a[1])[0]?.[0] ||
       "Sem dados";
+    const analisesIA = pedidos.filter(temAnaliseIA);
 
-    return { totalPedidos, valorTotal, totalItens, plataformaFavorita };
+    return {
+      totalPedidos,
+      valorTotal,
+      totalItens,
+      plataformaFavorita,
+      analisesIA,
+    };
   }, [pedidos]);
 
   return (
@@ -60,24 +73,76 @@ export default function AnalisePedido() {
       {carregando && <p>Carregando analise...</p>}
       {erro && <p className="message error">{erro}</p>}
       {!carregando && !erro && (
-        <div className="analytics-grid">
-          <article className="card metric">
-            <span>Pedidos</span>
-            <strong>{analise.totalPedidos}</strong>
-          </article>
-          <article className="card metric">
-            <span>Itens comprados</span>
-            <strong>{analise.totalItens}</strong>
-          </article>
-          <article className="card metric">
-            <span>Total gasto</span>
-            <strong>{formatarMoeda(analise.valorTotal)}</strong>
-          </article>
-          <article className="card metric">
-            <span>Plataforma favorita</span>
-            <strong>{analise.plataformaFavorita}</strong>
-          </article>
-        </div>
+        <>
+          <div className="analytics-grid">
+            <article className="card metric">
+              <span>Pedidos</span>
+              <strong>{analise.totalPedidos}</strong>
+            </article>
+            <article className="card metric">
+              <span>Itens comprados</span>
+              <strong>{analise.totalItens}</strong>
+            </article>
+            <article className="card metric">
+              <span>Total gasto</span>
+              <strong>{formatarMoeda(analise.valorTotal)}</strong>
+            </article>
+            <article className="card metric">
+              <span>Plataforma favorita</span>
+              <strong>{analise.plataformaFavorita}</strong>
+            </article>
+          </div>
+
+          <section className="stack">
+            <div className="page-heading">
+              <span className="eyebrow">IA</span>
+              <h2>Analise inteligente</h2>
+            </div>
+
+            {analise.analisesIA.length === 0 ? (
+              <p className="empty">
+                A IA ainda nao enviou recomendacoes ou cupom para seus pedidos.
+              </p>
+            ) : (
+              <div className="order-grid">
+                {analise.analisesIA.map((pedido) => (
+                  <article className="card ai-analysis-card" key={pedido.id}>
+                    <header className="order-header">
+                      <div>
+                        <span className="eyebrow">Pedido #{pedido.id}</span>
+                        <h2>Retorno da IA</h2>
+                      </div>
+                      {pedido.cupomDesconto && (
+                        <span className="coupon">{pedido.cupomDesconto}</span>
+                      )}
+                    </header>
+
+                    {pedido.mensagemIA && (
+                      <div className="ai-analysis-block">
+                        <span>Mensagem da IA</span>
+                        <p>{pedido.mensagemIA}</p>
+                      </div>
+                    )}
+
+                    {pedido.recomendacoes && (
+                      <div className="ai-analysis-block">
+                        <span>Recomendacoes</span>
+                        <p>{pedido.recomendacoes}</p>
+                      </div>
+                    )}
+
+                    {pedido.cupomDesconto && (
+                      <div className="ai-analysis-block">
+                        <span>Cupom fornecido</span>
+                        <strong>{pedido.cupomDesconto}</strong>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        </>
       )}
     </section>
   );
