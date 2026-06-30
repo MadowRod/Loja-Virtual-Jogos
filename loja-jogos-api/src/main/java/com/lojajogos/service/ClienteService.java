@@ -39,7 +39,15 @@ public class ClienteService {
         Cliente cliente = buscarEntidadePorId(id);
         cliente.setNome(dto.nome());
         cliente.setEmail(dto.email());
+        cliente.setCpf(dto.cpf());
+        cliente.setSenha(dto.senha());
         cliente.setTelefone(dto.telefone());
+        cliente.setCep(dto.cep());
+        cliente.setRua(dto.rua());
+        cliente.setNumero(dto.numero());
+        cliente.setBairro(dto.bairro());
+        cliente.setCidade(dto.cidade());
+        cliente.setPais(dto.pais());
         return converterParaResponseDTO(clienteRepository.save(cliente));
     }
 
@@ -61,7 +69,15 @@ public class ClienteService {
         return Cliente.builder()
                 .nome(dto.nome())
                 .email(dto.email())
+                .cpf(dto.cpf())
+                .senha(dto.senha())
                 .telefone(dto.telefone())
+                .cep(dto.cep())
+                .rua(dto.rua())
+                .numero(dto.numero())
+                .bairro(dto.bairro())
+                .cidade(dto.cidade())
+                .pais(dto.pais())
                 .build();
     }
 
@@ -70,7 +86,15 @@ public class ClienteService {
                 entity.getId(),
                 entity.getNome(),
                 entity.getEmail(),
-                entity.getTelefone()
+                entity.getCpf(),
+                entity.getSenha(),
+                entity.getTelefone(),
+                entity.getCep(),
+                entity.getRua(),
+                entity.getNumero(),
+                entity.getBairro(),
+                entity.getCidade(),
+                entity.getPais()
         );
     }
 }

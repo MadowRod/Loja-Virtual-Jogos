@@ -41,6 +41,7 @@ public class JogoService {
         jogo.setCategoria(dto.categoria());
         jogo.setPlataforma(dto.plataforma());
         jogo.setPreco(dto.preco());
+        jogo.setImagemUrl(dto.imagemUrl());
         return converterParaResponseDTO(jogoRepository.save(jogo));
     }
 
@@ -64,6 +65,7 @@ public class JogoService {
                 .categoria(dto.categoria())
                 .plataforma(dto.plataforma())
                 .preco(dto.preco())
+                .imagemUrl(dto.imagemUrl())
                 .build();
     }
 
@@ -73,7 +75,8 @@ public class JogoService {
                 entity.getNome(),
                 entity.getCategoria(),
                 entity.getPlataforma(),
-                entity.getPreco()
+                entity.getPreco(),
+                entity.getImagemUrl()
         );
     }
 }

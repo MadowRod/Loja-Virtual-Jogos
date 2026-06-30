@@ -1,24 +1,24 @@
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\controller\ClienteController.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\controller\JogoController.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\controller\PedidoController.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\ClienteRequestDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\ClienteResponseDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\ItemPedidoRequestDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\ItemPedidoResponseDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\JogoRequestDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\JogoResponseDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\PedidoRequestDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\dto\PedidoResponseDTO.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\entity\Cliente.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\entity\ItemPedido.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\entity\Jogo.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\entity\Pedido.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\entity\StatusPedido.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\LojaJogosApplication.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\repository\ClienteRepository.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\repository\ItemPedidoRepository.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\repository\JogoRepository.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\repository\PedidoRepository.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\service\ClienteService.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\service\JogoService.java
-C:\Users\MadowZada\loja-jogos-api\src\main\java\com\lojajogos\service\PedidoService.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\controller\ClienteController.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\controller\JogoController.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\controller\PedidoController.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\ClienteRequestDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\ClienteResponseDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\ItemPedidoRequestDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\ItemPedidoResponseDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\JogoRequestDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\JogoResponseDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\PedidoRequestDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\dto\PedidoResponseDTO.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\entity\Cliente.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\entity\ItemPedido.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\entity\Jogo.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\entity\Pedido.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\entity\StatusPedido.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\LojaJogosApplication.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\repository\ClienteRepository.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\repository\ItemPedidoRepository.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\repository\JogoRepository.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\repository\PedidoRepository.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\service\ClienteService.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\service\JogoService.java
+C:\Users\Pedro Henrique\OneDrive\Documentos\Serratec\Loja-Virtual-Jogos\loja-jogos-api\src\main\java\com\lojajogos\service\PedidoService.java

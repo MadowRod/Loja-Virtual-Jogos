@@ -141,7 +141,8 @@ public class PedidoService {
                 jogo.getNome(),
                 jogo.getCategoria(),
                 jogo.getPlataforma(),
-                jogo.getPreco()
+                jogo.getPreco(),
+                jogo.getImagemUrl()
         );
     }
 
@@ -150,7 +151,15 @@ public class PedidoService {
                 cliente.getId(),
                 cliente.getNome(),
                 cliente.getEmail(),
-                cliente.getTelefone()
+                cliente.getCpf(),
+                cliente.getSenha(),
+                cliente.getTelefone(),
+                cliente.getCep(),
+                cliente.getRua(),
+                cliente.getNumero(),
+                cliente.getBairro(),
+                cliente.getCidade(),
+                cliente.getPais()
         );
     }
 
