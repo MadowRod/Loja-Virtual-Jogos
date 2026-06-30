@@ -2,6 +2,7 @@ package com.lojajogos.controller;
 
 import com.lojajogos.dto.ClienteRequestDTO;
 import com.lojajogos.dto.ClienteResponseDTO;
+import com.lojajogos.dto.LoginRequestDTO;
 import com.lojajogos.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,11 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ClienteResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
+        return ResponseEntity.ok(clienteService.login(dto));
     }
 
     @GetMapping("/{id}")

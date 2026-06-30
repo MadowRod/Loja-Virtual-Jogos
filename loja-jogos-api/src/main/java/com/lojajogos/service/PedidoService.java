@@ -1,5 +1,6 @@
 package com.lojajogos.service;
 
+import com.lojajogos.dto.AnaliseRequestDTO;
 import com.lojajogos.dto.ClienteResponseDTO;
 import com.lojajogos.dto.ItemPedidoRequestDTO;
 import com.lojajogos.dto.ItemPedidoResponseDTO;
@@ -16,22 +17,32 @@ import com.lojajogos.repository.JogoRepository;
 import com.lojajogos.repository.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ClienteRepository clienteRepository;
     private final JogoRepository jogoRepository;
+    private final RestTemplate restTemplate;
+
+    @Value("${n8n.webhook.url}")
+    private String n8nWebhookUrl;
 
     @Transactional
     public PedidoResponseDTO salvar(PedidoRequestDTO dto) {
@@ -62,6 +73,16 @@ public class PedidoService {
 
         Pedido pedido = buscarEntidadePorId(id);
         pedido.setStatusPedido(status);
+        return converterParaResponseDTO(pedidoRepository.save(pedido));
+    }
+
+    @Transactional
+    public PedidoResponseDTO atualizarAnalise(Long id, AnaliseRequestDTO dto) {
+        Pedido pedido = buscarEntidadePorId(id);
+        pedido.setPerfilCliente(dto.perfilCliente());
+        pedido.setRecomendacoes(dto.recomendacoes());
+        pedido.setCupomDesconto(dto.cupomDesconto());
+        pedido.setMensagemIA(dto.mensagemIA());
         return converterParaResponseDTO(pedidoRepository.save(pedido));
     }
 
@@ -123,7 +144,11 @@ public class PedidoService {
                 entity.getDataPedido(),
                 entity.getValorTotal(),
                 entity.getStatusPedido(),
-                itens
+                itens,
+                entity.getPerfilCliente(),
+                entity.getRecomendacoes(),
+                entity.getCupomDesconto(),
+                entity.getMensagemIA()
         );
     }
 
@@ -150,11 +175,30 @@ public class PedidoService {
                 cliente.getId(),
                 cliente.getNome(),
                 cliente.getEmail(),
-                cliente.getTelefone()
+                cliente.getTelefone(),
+                cliente.getCep(),
+                cliente.getRua(),
+                cliente.getNumero(),
+                cliente.getBairro(),
+                cliente.getCidade(),
+                cliente.getPais()
         );
     }
 
     private void enviarPedidoParaAutomacao(Pedido pedido) {
-        // Futuramente será feita uma requisição HTTP para o webhook do n8n.
+        try {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("id", pedido.getId());
+            payload.put("cliente", pedido.getCliente().getNome());
+            payload.put("cidade", "Petrópolis");
+            payload.put("valorTotal", pedido.getValorTotal());
+            payload.put("produtos", pedido.getItens().stream()
+                    .map(item -> item.getJogo().getNome())
+                    .toList());
+
+            restTemplate.postForEntity(n8nWebhookUrl, payload, Void.class);
+        } catch (Exception e) {
+            log.error("Erro ao enviar pedido {} para automação n8n: {}", pedido.getId(), e.getMessage(), e);
+        }
     }
 }

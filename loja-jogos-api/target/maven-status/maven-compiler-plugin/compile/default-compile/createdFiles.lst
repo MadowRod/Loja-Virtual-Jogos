@@ -12,7 +12,10 @@ com\lojajogos\service\PedidoService.class
 com\lojajogos\repository\ItemPedidoRepository.class
 com\lojajogos\LojaJogosApplication.class
 com\lojajogos\repository\ClienteRepository.class
+com\lojajogos\config\AppConfig.class
 com\lojajogos\entity\Cliente$ClienteBuilder.class
+com\lojajogos\controller\ApiExceptionHandler.class
+com\lojajogos\dto\AnaliseRequestDTO.class
 com\lojajogos\dto\JogoResponseDTO.class
 com\lojajogos\service\JogoService.class
 com\lojajogos\dto\ItemPedidoRequestDTO.class
@@ -26,3 +29,4 @@ com\lojajogos\repository\PedidoRepository.class
 com\lojajogos\dto\ClienteRequestDTO.class
 com\lojajogos\entity\Pedido$PedidoBuilder.class
 com\lojajogos\entity\StatusPedido.class
+com\lojajogos\dto\LoginRequestDTO.class

@@ -1,5 +1,6 @@
 package com.lojajogos.controller;
 
+import com.lojajogos.dto.AnaliseRequestDTO;
 import com.lojajogos.dto.PedidoRequestDTO;
 import com.lojajogos.dto.PedidoResponseDTO;
 import com.lojajogos.entity.StatusPedido;
@@ -48,6 +49,14 @@ public class PedidoController {
             @RequestBody StatusPedido status
     ) {
         return ResponseEntity.ok(pedidoService.atualizarStatus(id, status));
+    }
+
+    @PutMapping("/{id}/analise")
+    public ResponseEntity<PedidoResponseDTO> atualizarAnalise(
+            @PathVariable Long id,
+            @RequestBody AnaliseRequestDTO dto
+    ) {
+        return ResponseEntity.ok(pedidoService.atualizarAnalise(id, dto));
     }
 
     @DeleteMapping("/{id}")
