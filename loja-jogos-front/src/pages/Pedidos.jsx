@@ -24,9 +24,14 @@ export default function Pedidos() {
     carregarPedidos();
   }, []);
 
+  const clienteId = cliente?.id;
+
   const pedidosCliente = useMemo(
-    () => pedidos.filter((pedido) => pedido.cliente.id === cliente.id),
-    [cliente.id, pedidos]
+    () =>
+      clienteId
+        ? pedidos.filter((pedido) => pedido.cliente?.id === clienteId)
+        : [],
+    [clienteId, pedidos]
   );
 
   return (

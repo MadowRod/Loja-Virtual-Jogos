@@ -50,7 +50,7 @@ export default function Buscar() {
             type="search"
             value={termo}
             onChange={(event) => setTermo(event.target.value)}
-            placeholder="Ex.: PS5, controle, aventura"
+            placeholder="Ex.: Playstation, controle, corrida"
             aria-label="Buscar produto"
           />
         </div>

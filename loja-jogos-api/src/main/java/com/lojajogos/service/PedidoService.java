@@ -175,7 +175,13 @@ public class PedidoService {
                 cliente.getId(),
                 cliente.getNome(),
                 cliente.getEmail(),
-                cliente.getTelefone()
+                cliente.getTelefone(),
+                cliente.getCep(),
+                cliente.getRua(),
+                cliente.getNumero(),
+                cliente.getBairro(),
+                cliente.getCidade(),
+                cliente.getPais()
         );
     }
 

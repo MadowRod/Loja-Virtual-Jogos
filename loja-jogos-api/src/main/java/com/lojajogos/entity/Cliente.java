@@ -36,7 +36,28 @@ public class Cliente {
     private String email;
 
     @Column(nullable = false)
+    private String senha;
+
+    @Column(nullable = false)
     private String telefone;
+
+    @Column(nullable = false)
+    private String cep;
+
+    @Column(nullable = false)
+    private String rua;
+
+    @Column(nullable = false)
+    private String numero;
+
+    @Column(nullable = false)
+    private String bairro;
+
+    @Column(nullable = false)
+    private String cidade;
+
+    @Column(nullable = false)
+    private String pais;
 
     @OneToMany(mappedBy = "cliente")
     @Builder.Default
