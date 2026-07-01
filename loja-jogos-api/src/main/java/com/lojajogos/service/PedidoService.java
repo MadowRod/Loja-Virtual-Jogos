@@ -166,7 +166,8 @@ public class PedidoService {
                 jogo.getNome(),
                 jogo.getCategoria(),
                 jogo.getPlataforma(),
-                jogo.getPreco()
+                jogo.getPreco(),
+                jogo.getImagemUrl()
         );
     }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/jogos")
@@ -53,5 +54,11 @@ public class JogoController {
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         jogoService.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/atualizar-imagens")
+    public ResponseEntity<Map<String, Integer>> atualizarImagens() {
+        int jogosAtualizados = jogoService.atualizarImagensFaltantes();
+        return ResponseEntity.ok(Map.of("jogosAtualizados", jogosAtualizados));
     }
 }

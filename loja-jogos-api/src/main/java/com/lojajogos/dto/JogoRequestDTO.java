@@ -10,6 +10,7 @@ public record JogoRequestDTO(
         @NotBlank String nome,
         @NotBlank String categoria,
         @NotBlank String plataforma,
-        @NotNull @Positive BigDecimal preco
+        @NotNull @Positive BigDecimal preco,
+        String imagemUrl
 ) {
 }

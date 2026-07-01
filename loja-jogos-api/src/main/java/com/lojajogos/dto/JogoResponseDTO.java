@@ -7,6 +7,7 @@ public record JogoResponseDTO(
         String nome,
         String categoria,
         String plataforma,
-        BigDecimal preco
+        BigDecimal preco,
+        String imagemUrl
 ) {
 }

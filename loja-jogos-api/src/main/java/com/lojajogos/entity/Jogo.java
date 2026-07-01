@@ -42,6 +42,9 @@ public class Jogo {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal preco;
 
+    @Column(length = 500)
+    private String imagemUrl;
+
     @OneToMany(mappedBy = "jogo")
     @Builder.Default
     private List<ItemPedido> itensPedido = new ArrayList<>();

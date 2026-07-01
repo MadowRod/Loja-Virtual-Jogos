@@ -2,6 +2,8 @@ package com.lojajogos.config;
 
 import com.lojajogos.entity.Jogo;
 import com.lojajogos.repository.JogoRepository;
+import com.lojajogos.service.JogoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
+@Slf4j
 public class AppConfig {
 
     @Bean
@@ -41,13 +44,13 @@ public class AppConfig {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
-                .setConnectTimeout(Duration.ofSeconds(2))
-                .setReadTimeout(Duration.ofSeconds(2))
+                .setConnectTimeout(Duration.ofSeconds(5))
+                .setReadTimeout(Duration.ofSeconds(5))
                 .build();
     }
 
     @Bean
-    public CommandLineRunner carregarJogos(JogoRepository jogoRepository) {
+    public CommandLineRunner carregarJogos(JogoRepository jogoRepository, JogoService jogoService) {
         return args -> {
             List<Jogo> jogos = List.of(
                     jogo("Halo Infinite", "Acao", "Xbox Series", "199.90"),
@@ -105,6 +108,19 @@ public class AppConfig {
                     .toList();
 
             jogoRepository.saveAll(jogosNovos);
+
+            // Busca as imagens dos jogos que ainda não têm (consumindo a RAWG API)
+            // em uma thread separada, para não atrasar a subida da aplicação.
+            Thread threadImagens = new Thread(() -> {
+                try {
+                    int atualizados = jogoService.atualizarImagensFaltantes();
+                    log.info("Imagens de {} jogo(s) preenchidas automaticamente ao iniciar.", atualizados);
+                } catch (Exception e) {
+                    log.error("Erro ao preencher imagens dos jogos ao iniciar: {}", e.getMessage(), e);
+                }
+            }, "carga-imagens-jogos");
+            threadImagens.setDaemon(true);
+            threadImagens.start();
         };
     }
 
